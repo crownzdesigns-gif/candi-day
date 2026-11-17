@@ -1,0 +1,39 @@
+/* Custom candy cursor + pooled particle trail (spec §3.9). Fine pointer only. */
+.cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fc9bbe 45%, #fc7aa0 100%);
+  box-shadow: 0 2px 10px rgba(128, 16, 38, 0.35);
+  will-change: transform;
+  transition: opacity 180ms ease;
+}
+
+.cursor-particle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* hide the native cursor while the candy cursor is active */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  cursor: none !important;
+}

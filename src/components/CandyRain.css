@@ -1,0 +1,17 @@
+/* Easter-egg candy rain overlay (spec §3.13). Transform/opacity only. */
+.candy-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+}
+.candy-rain span {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 30px;
+  line-height: 1;
+  user-select: none;
+  will-change: transform, opacity;
+}

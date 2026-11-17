@@ -1,0 +1,269 @@
+.footer {
+  position: relative;
+  background: var(--berry);
+  color: var(--cream-warm);
+  overflow: hidden;
+}
+
+/* ---------- Link columns + newsletter ---------- */
+.footer__menu {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 50px var(--gutter) 28px;
+}
+
+.footer__col {
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.footer__col-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.27px;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  color: var(--cream-warm);
+}
+.footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer__link {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--cream-warm);
+  opacity: 0.92;
+  transition:
+    opacity var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out-quart);
+  display: inline-block;
+}
+.footer__link:hover {
+  opacity: 1;
+  transform: translateX(4px);
+  color: var(--blush);
+}
+
+/* ---------- Newsletter card ---------- */
+.newsletter {
+  flex: 0 1 415px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 28px 38px;
+  border: 2px dashed var(--cream-warm);
+}
+.newsletter__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.27px;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+}
+.newsletter__copy {
+  max-width: 279px;
+  font-family: var(--font-ui);
+  font-size: 14.3px;
+  line-height: 1.4;
+  letter-spacing: -0.17px;
+}
+.newsletter__form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+.newsletter__input {
+  width: 100%;
+  padding: 13px 22px;
+  border: 1px solid var(--cream);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--cream-warm);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.newsletter__input::placeholder {
+  color: rgba(255, 251, 241, 0.65);
+}
+.newsletter__input:focus {
+  outline: none;
+  border-color: var(--blush);
+  box-shadow: 0 0 0 3px rgba(255, 219, 214, 0.25);
+}
+.newsletter__btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--blush);
+  color: var(--cocoa);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    filter var(--dur-fast) ease;
+}
+.newsletter__btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+}
+.newsletter__btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+.newsletter__btn:active {
+  transform: scale(0.97);
+}
+.newsletter__btn .btn__arrow {
+  transition: transform var(--dur-normal) var(--ease-spring);
+}
+.newsletter__success {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--blush);
+  max-width: 300px;
+  animation: pop 360ms var(--ease-spring);
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- Giant wordmark ---------- */
+.footer__wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(72px, 17vw, 245px);
+  line-height: 1.1;
+  letter-spacing: -2.17px;
+  color: var(--blush);
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  margin: 8px 0 0;
+}
+
+/* ---------- Copyright ---------- */
+.footer__copyright {
+  background: var(--blush);
+  color: var(--cocoa);
+  text-align: center;
+  padding: 14px 28px;
+}
+.footer__copyright p {
+  font-size: 15px;
+}
+
+/* ---------- Newsletter motion add-ons (spec §3.10) ---------- */
+.newsletter__candy {
+  display: inline-block;
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* floating label — transform only, zero layout shift */
+.newsletter__field {
+  position: relative;
+  width: 100%;
+}
+.newsletter__label {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  pointer-events: none;
+  color: rgba(255, 251, 241, 0.65);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition:
+    transform 0.2s var(--ease-candy-out),
+    color 0.2s ease;
+}
+.newsletter__input:focus + .newsletter__label,
+.newsletter__input:not(:placeholder-shown) + .newsletter__label {
+  transform: translateY(-20px) scale(0.78);
+  color: var(--blush);
+}
+
+/* focus glow pink → purple (0.25s) */
+.newsletter__input {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.newsletter__input:focus {
+  border-color: var(--lilac);
+  box-shadow:
+    0 0 0 3px rgba(252, 155, 190, 0.35),
+    0 0 18px rgba(235, 222, 255, 0.5);
+}
+
+/* Join marshmallow — Framer owns the transform (spec §3.11) */
+.newsletter__btn {
+  transition: filter var(--dur-fast) ease;
+  transform-origin: center;
+}
+
+/* ---------- Wordmark — per-letter gradient + ripple (spec §3.12) ---------- */
+.footer__wordmark-inner {
+  display: inline-block;
+  white-space: nowrap;
+}
+.wordmark__letter {
+  display: inline-block;
+  /* gradient + clip applied to EACH letter, never the transformed parent */
+  background-image: linear-gradient(
+    100deg,
+    #ffdbd6 0%,
+    #fc9bbe 25%,
+    #ebdeff 50%,
+    #fc9b7a 75%,
+    #ffdbd6 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  will-change: transform;
+  animation: wordmark-shimmer 6s linear infinite;
+}
+@keyframes wordmark-shimmer {
+  to { background-position: 220% 0; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .footer__menu {
+    padding: 44px 28px 24px;
+    gap: 32px;
+  }
+  .newsletter {
+    flex: 1 1 100%;
+  }
+}

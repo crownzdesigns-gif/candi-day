@@ -1,0 +1,386 @@
+.hero {
+  position: relative;
+  background: var(--cream);
+  padding: 40px clamp(12px, 4vw, 28px) 0;
+  overflow: hidden;
+}
+
+/* faint paper-grid texture */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/section-bg.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  pointer-events: none;
+  /* barely-perceptible breathe + drift (spec §3.14); transform/opacity only */
+  animation: hero-grid-drift 22s ease-in-out infinite;
+}
+@keyframes hero-grid-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.04); opacity: 0.17; }
+  50% { transform: translate3d(-6px, 4px, 0) scale(1.04); opacity: 0.22; }
+}
+
+/* ============================================================
+   BASE / MOBILE  (stacked, centered)
+   ============================================================ */
+.hero__card {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 28px;
+  padding: 40px clamp(16px, 5vw, 40px) 44px;
+  background: var(--cream);
+  border: 1px solid rgba(112, 46, 37, 0.6);
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  color: var(--cocoa);
+}
+.hero__text-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(33px, 9.4vw, 60px);
+  line-height: 1.06;
+}
+/* word spans must be inline-block for the entrance transform to apply (spec §3.3) */
+.hero__word {
+  display: inline-block;
+  vertical-align: top;
+}
+.hero__sub {
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: -0.576px;
+  max-width: 44ch;
+  margin: 0 auto;
+}
+.hero__cta {
+  font-size: 17px;
+  /* Framer owns this button's transform (squash/stretch, §3.5); keep the
+     shared .btn shadow/filter transitions but drop transform from the list. */
+  transition:
+    box-shadow var(--dur-normal) var(--ease-out-quart),
+    filter var(--dur-fast) ease;
+  transform-origin: center bottom;
+}
+/* squiggle bridges the CTA → toast on phones (Figma shows it tilted).
+   Kept in normal flow + aligned right so it never collides with fluid text.
+   Hidden in the 601–1239 tablet range where it would float orphaned; the
+   desktop block re-enables it as the horizontal subtitle→toast bridge. */
+.hero__squiggle {
+  display: none;
+  width: clamp(78px, 24vw, 110px);
+  height: auto;
+  align-self: flex-end;
+  margin-right: 4%;
+  margin-bottom: -22px;
+  transform: rotate(104deg);
+  transform-origin: center;
+  opacity: 0.9;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  .hero__squiggle {
+    display: block;
+  }
+}
+
+/* art block (relative box on mobile) — fluid, aspect-locked so the
+   absolutely-positioned stickers scale with it instead of a fixed height */
+.hero__art {
+  position: relative;
+  width: min(360px, 100%);
+  aspect-ratio: 350 / 392;
+  margin-top: 4px;
+}
+.hero__toast-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero__toast-rot {
+  transform: rotate(10deg);
+}
+/* Toast RAF layers (spec §3.4) — each owns exactly one transform, written by
+   the shared-state loop in ToastArt. CSS here only sets the resting pose used
+   under reduced-motion (loop disabled) and promotes layers for cheap compositing. */
+.toast-float {
+  transform: rotate(10deg);
+  will-change: transform;
+}
+.toast-tilt {
+  will-change: transform;
+}
+.hero__toast {
+  width: 82%;
+  height: auto;
+  filter: drop-shadow(0 22px 30px rgba(112, 46, 37, 0.26));
+}
+.hero__badge {
+  position: absolute;
+  top: 4%;
+  right: 1%;
+  transform: rotate(10deg);
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 45px;
+}
+.hero__badge-bg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 14px rgba(0, 37, 157, 0.28));
+}
+.hero__badge-text {
+  grid-area: 1 / 1;
+  place-self: center;
+  position: relative;
+  z-index: 1;
+  color: var(--ink-blue);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero__rocky {
+  position: absolute;
+  left: 1%;
+  bottom: 9%;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+}
+.hero__rocky img {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+}
+.hero__rocky-label {
+  grid-area: 1 / 1;
+  place-self: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.6px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+.hero__sticker {
+  position: absolute;
+  right: 2%;
+  bottom: 8%;
+  width: 86px;
+  height: 86px;
+}
+
+/* bottom rainbow stitch strip — conveyor (spec §3.7) */
+.hero__strip {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: 56px;
+  height: 56px;
+  overflow: hidden;
+}
+.hero__strip-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  animation: conveyor 12s linear infinite;
+  will-change: transform;
+}
+.hero__strip-track img {
+  flex: 0 0 50%;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+@keyframes conveyor {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   DESKTOP  — pixel-exact 1241 × 579 card (matches Figma 1440)
+   ============================================================ */
+@media (min-width: 1240px) {
+  .hero {
+    height: 809px;
+    padding: 0;
+  }
+  .hero__card {
+    width: 1241px;
+    max-width: none;
+    height: 579px;
+    margin: 90px auto 0;
+    padding: 0;
+    display: block;
+    text-align: left;
+    overflow: visible;
+  }
+
+  /* text block — vertically centered, left aligned */
+  .hero__text {
+    position: absolute;
+    left: 70px;
+    top: 224.6px;
+    transform: translateY(-50%);
+    width: 649px;
+    align-items: flex-start;
+    gap: 50px;
+  }
+  .hero__text-inner {
+    gap: 24px;
+    width: 100%;
+  }
+  .hero__title {
+    font-size: 70px;
+    line-height: 69.9px;
+    letter-spacing: 0;
+    width: 100%;
+  }
+  .hero__sub {
+    font-size: 22px;
+    line-height: 28.8px;
+    letter-spacing: -0.576px;
+    width: 494px;
+    max-width: 494px;
+    margin: 0;
+  }
+  .hero__cta {
+    align-self: flex-start;
+  }
+
+  /* squiggle bridges subtitle → toast */
+  .hero__squiggle {
+    display: block;
+    position: absolute;
+    left: 540px;
+    top: 266px;
+    width: 205px;
+    height: auto;
+    margin: 0;
+    align-self: auto;
+    transform: none;
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  /* art children resolve against the card */
+  .hero__art {
+    display: contents;
+  }
+
+  .hero__toast-wrap {
+    position: absolute;
+    inset: auto;
+    left: 725px;
+    top: 59px;
+    width: 434px;
+    height: 473px;
+  }
+  .toast-float {
+    transform: rotate(12deg);
+  }
+  .hero__toast {
+    width: 357px;
+    height: 407px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero__badge {
+    left: 936px;
+    top: 92px;
+    right: auto;
+    bottom: auto;
+    transform: rotate(12deg);
+    width: 119px;
+    height: 51px;
+  }
+  .hero__badge-text {
+    font-size: 14px;
+  }
+
+  .hero__rocky {
+    left: 512px;
+    top: 394px;
+    right: auto;
+    bottom: auto;
+    width: 92px;
+    height: 92px;
+  }
+  .hero__rocky-label {
+    font-size: 14px;
+  }
+
+  .hero__sticker {
+    left: 1040px;
+    top: 380px;
+    right: auto;
+    bottom: auto;
+    width: 98px;
+    height: 98px;
+  }
+}
+
+/* ============================================================
+   Floating / spin animations
+   ============================================================ */
+@keyframes floaty {
+  0%, 100% { transform: var(--rest) translateY(0); }
+  50% { transform: var(--rest) translateY(-12px); }
+}
+.float-slow {
+  --rest: rotate(12deg);
+  animation: floaty 7s var(--ease-out-quart) infinite;
+}
+.float-mid {
+  --rest: rotate(0deg);
+  animation: floaty 5.5s var(--ease-out-quart) infinite 0.4s;
+}
+.float-fast {
+  --rest: rotate(12deg);
+  animation: floaty 4.5s var(--ease-out-quart) infinite 0.2s;
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spin-slow 26s linear infinite;
+}
+
+/* mobile resting rotations differ slightly */
+@media (max-width: 1239px) {
+  .float-slow { --rest: rotate(10deg); }
+  .float-fast { --rest: rotate(10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-slow { transform: rotate(12deg); animation: none; }
+  .float-fast { transform: rotate(12deg); animation: none; }
+  .float-mid { transform: none; animation: none; }
+  .spin-slow { animation: none; }
+}
